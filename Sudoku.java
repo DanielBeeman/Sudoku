@@ -27,6 +27,9 @@ public class Sudoku extends Application {
 
 	private boolean playable = true;
 
+	// the number of numbers in a given row
+	private int numsPerEntity = 4;
+
 	// the entire game board, used in combos. 3 types of combos: horizontal, vertical, boxes.
 	// Each combo is from 0-9. Once all possible combos are complete, the game is complete. 
 	private Tile[][] board = new Tile[9][9];
@@ -42,6 +45,9 @@ public class Sudoku extends Application {
 	private Line line;
 
 	private Rectangle boxComplete;
+
+	// to keep track of how many lines we have drawn for both horizontal/vertical lines as well as boxes.
+	private int lineSize;
 
 	// made this accessible up here in order to delete all lines and boxes when we selected clear.
 	private List<Line> comboLines = new ArrayList<>();
@@ -143,9 +149,6 @@ public class Sudoku extends Application {
 			board[6][7], board[7][7], board[8][7],
 			board[6][8], board[7][8], board[8][8]));
 
-		// combos.add(new Combo(board[0][0], board[1][1], board[2][2]));
-		// combos.add(new Combo(board[2][0], board[1][1], board[0][2]));
-
 		//buttons 
 		Button button1 = new Button(" 1 ");
 		Button button2 = new Button(" 2 ");
@@ -158,6 +161,8 @@ public class Sudoku extends Application {
 		Button button9 = new Button(" 9 ");
 
 		Button checkCombos = new Button(" Check ");
+
+		Button createBoard = new Button(" New Board ");
 
 		button1.setMinWidth(50);
 		button1.setMinHeight(75);
@@ -179,8 +184,10 @@ public class Sudoku extends Application {
 		button9.setMinHeight(75);
 
 		checkCombos.setMinWidth(75);
-		checkCombos.setMinHeight(75);	
+		checkCombos.setMinHeight(75);
 
+		createBoard.setMinWidth(100);
+		createBoard.setMinHeight(100);
 		
 		
 		button1.setLayoutX(910);
@@ -205,6 +212,9 @@ public class Sudoku extends Application {
 		checkCombos.setLayoutX(910);
 		checkCombos.setLayoutY(300);
 
+		createBoard.setLayoutX(910);
+		createBoard.setLayoutY(200);
+
 		root.getChildren().add(button1);
 		root.getChildren().add(button2);
 		root.getChildren().add(button3);
@@ -214,58 +224,64 @@ public class Sudoku extends Application {
 		root.getChildren().add(button7);
 		root.getChildren().add(button8);
 		root.getChildren().add(button9);
-
 		root.getChildren().add(checkCombos);
+		root.getChildren().add(createBoard);
 
 		button1.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addOne(curr);
         	});
 		button2.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addTwo(curr);
         	});
 		button3.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 						return;
            		addThree(curr);
         	});
 		button4.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addFour(curr);
         	});
 		button5.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addFive(curr);
         	});
 		button6.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addSix(curr);
         	});
 		button7.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addSeven(curr);
         	});
 		button8.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addEight(curr);
         	});
 		button9.setOnAction(value ->  {
-				if (curr == null)
+				if (curr == null || !playable)
 					return;
            		addNine(curr);
         	});
 
 		checkCombos.setOnAction(value -> {
+				if (!playable)
+					return;
 				checkState();
 		});
+
+		createBoard.setOnAction(value ->  {
+           		createNewBoard();
+        	});
 
 
 		return root;
@@ -278,7 +294,77 @@ public class Sudoku extends Application {
 		primaryStage.show();
 	}
 
+	private void createNewBoard() {
+		
+
+		//another hashtable for locations of a given row
+		Hashtable<Integer, Boolean> locations = new Hashtable<Integer, Boolean>();
+
+		for (int i = 0; i < 9; i++) {
+			locations.put(0, false);
+			locations.put(1, false);
+			locations.put(2, false);
+			locations.put(3, false);
+			locations.put(4, false);
+			locations.put(5, false);
+			locations.put(6, false);
+			locations.put(7, false);
+			locations.put(8, false);
+				
+
+			Random rand = new Random();
+
+			for (int j = numsPerEntity; j > 0; j--){
+				// location (0-8) of a given value in a given row/column.
+				int boardLocation = rand.nextInt(9);
+
+				//until we find a new location to place a number, keep generating a new number
+				while (locations.get(boardLocation) == true) {
+					boardLocation = rand.nextInt(9);
+				}
+				locations.put(boardLocation, true);
+				
+
+				
+				// number for a given square
+				int nextVal = rand.nextInt(9);
+
+				
+				
+				boolean foundFalse = false;
+
+				while (!foundFalse){
+
+						// make sure we haven't already inserted a number, and that the number entry would keep the board correct
+						nextVal = rand.nextInt(9);
+					board[i][boardLocation].val = nextVal + 1;
+					boolean internal = false;
+					for (Combo c : combos){
+						if (!c.checkEntry()) {
+							foundFalse = false;
+							internal = true;
+						}
+					}			
+					if (!internal) foundFalse = true;
+					System.out.println(internal);
+				}
+				board[i][boardLocation].val = nextVal + 1;
+				board[i][boardLocation].text.setText(Integer.toString(nextVal + 1));
+				
+
+			}
+
+
+
+
+		}
+		return;
+	}
+
+
 	private void checkState() {
+		lineSize = 0;
+
 		for (Line l : comboLines) {
 			root.getChildren().remove(l);
 		}
@@ -288,13 +374,44 @@ public class Sudoku extends Application {
 		}
 		for (Combo combo : combos) {
 			if (combo.isComplete()) {
-				
-	/* This should only happen when game is over!! */ 
-				// playable = false;
 
 				// animation when the combination is complete
 				playWinAnimation(combo);
+				lineSize++;
 			}
+		}
+		System.out.println("number of comboline and rectangles: ");
+		System.out.println(lineSize);
+		System.out.println();
+		//check if the game is over (9 rows, 9 columns, 9 boxes)
+		if (lineSize == 27) {
+
+			for (Line l : comboLines) {
+				root.getChildren().remove(l);
+			}
+
+			for (Rectangle r : comboRectangles) {
+				root.getChildren().remove(r);
+			}
+			
+			board[1][3].text.setText("P");
+			board[2][3].text.setText("U");
+			board[3][3].text.setText("Z");
+			board[4][3].text.setText("Z");
+			board[5][3].text.setText("L");
+			board[6][3].text.setText("E");
+
+			board[0][4].text.setText("C");
+			board[1][4].text.setText("O");
+			board[2][4].text.setText("M");
+			board[3][4].text.setText("P");
+			board[4][4].text.setText("L");
+			board[5][4].text.setText("E");
+			board[6][4].text.setText("T");
+			board[7][4].text.setText("E");
+			board[8][4].text.setText("!");
+
+			playable = false;
 		}
 	}
 
@@ -373,8 +490,6 @@ public class Sudoku extends Application {
 			// here we check that each entry has not yet been seen in the dictionary, if it has been seen we return false!
 			for (int j = 0; j < 9; j++){
 				int curr = tiles[j].val;
-				// System.out.println(curr);
-				// System.out.println(numbers.get(curr));
 				if (numbers.get(curr) == true) {
 					return false;
 
@@ -382,6 +497,42 @@ public class Sudoku extends Application {
 				else numbers.put(curr, true);
 			}
 
+			return true;
+		}
+
+		public boolean checkEntry () {
+			for (Combo c : combos){
+				// to keep track of each number in a row, column, or box
+				Hashtable<Integer, Boolean> entries = new Hashtable<Integer, Boolean>();
+
+				entries.put(1, false);
+				entries.put(2, false);
+				entries.put(3, false);
+				entries.put(4, false);
+				entries.put(5, false);
+				entries.put(6, false);
+				entries.put(7, false);
+				entries.put(8, false);
+				entries.put(9, false);
+
+				// here we check that each entry has not yet been seen in the dictionary, if it has been seen we return false!
+				//System.out.println("------------------------------------------------------");
+				for (int j = 0; j < 9; j++){
+					//System.out.println(tiles[j].val);
+					if (tiles[j].val == 0)
+						continue;
+					int curr = tiles[j].val;
+					
+					
+					if (entries.get(curr) == true) {
+						return false;
+
+					}
+					else entries.put(curr, true);
+				}
+
+				
+			}
 			return true;
 		}
 	}
@@ -496,7 +647,5 @@ public class Sudoku extends Application {
 	public static void main(String[] args) {
 		launch(args);		
 	}
-
-
 	
 }
