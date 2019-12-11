@@ -303,12 +303,12 @@ public class Sudoku extends Application {
 		// idea. have a random int between 0 and 4 be generated, if 1, we assign board values for one board, if 2 we assign values for a second board, etc.
 		Random rand = new Random();
 
-		int boardSelection = rand.nextInt(2);
+		int boardSelection = rand.nextInt(5);
 		System.out.println(boardSelection);
 
 		if (boardSelection == 0) {
 			
-
+			// puzzle 1 in the book
 			board[0][0].val = 1; 		   board[1][0].val = 9;				board[3][0].val = 4; 		   board[5][0].val = 8;
 			board[0][0].text.setText("1"); board[1][0].text.setText("9");   board[3][0].text.setText("4"); board[5][0].text.setText("8");
 			board[7][0].val = 2; 		   board[8][0].val = 5;				board[1][1].val = 6; 		   board[2][1].val = 8;
@@ -337,7 +337,7 @@ public class Sudoku extends Application {
 		
 		else if (boardSelection == 1) {
 			
-
+			// puzzle 2 in the book
 			board[4][0].val = 8; 		   board[7][0].val = 4;				board[1][1].val = 6; 		   board[5][1].val = 4;
 			board[4][0].text.setText("8"); board[7][0].text.setText("4");   board[1][1].text.setText("6"); board[5][1].text.setText("4");
 			board[6][1].val = 9; 		   board[8][1].val = 7;				board[0][2].val = 4; 		   board[1][2].val = 9;
@@ -360,6 +360,93 @@ public class Sudoku extends Application {
 			board[8][6].text.setText("6"); board[0][7].text.setText("9");  board[2][7].text.setText("5");   board[3][7].text.setText("1"); 
 			board[7][7].val = 8;           board[1][8].val = 1; 		   board[4][8].val = 4;
 			board[7][7].text.setText("8"); board[1][8].text.setText("1");  board[4][8].text.setText("4");
+			  
+		}
+
+		else if (boardSelection == 2) {
+			
+			// puzzle 3 in the book
+			board[2][0].val = 8; 		   board[3][0].val = 2;
+			board[2][0].text.setText("8"); board[3][0].text.setText("2");
+			board[4][0].val = 9; 		   board[5][0].val = 5;				board[7][0].val = 4; 		   board[8][0].val = 6;
+			board[4][0].text.setText("9"); board[5][0].text.setText("5");   board[7][0].text.setText("4"); board[8][0].text.setText("6");
+
+			board[2][1].val = 2; 		   board[3][1].val = 4;				board[6][1].val = 8; 		   board[8][1].val = 3;
+			board[2][1].text.setText("2"); board[3][1].text.setText("4");   board[6][1].text.setText("8"); board[8][1].text.setText("3");
+			board[0][2].val = 9; 		   board[5][2].val = 8;				board[3][3].val = 7; 		   board[5][3].val = 1;
+			board[0][2].text.setText("9"); board[5][2].text.setText("8");   board[3][3].text.setText("7"); board[5][3].text.setText("1");
+
+			board[6][3].val = 3; 		   board[8][3].val = 5; 		   board[1][4].val = 6;
+			board[6][3].text.setText("3"); board[8][3].text.setText("5"); board[1][4].text.setText("6");
+
+			board[3][4].val = 3; 		   board[5][4].val = 9;				board[7][4].val = 7; 		   board[0][5].val = 7; 
+			board[3][4].text.setText("3"); board[5][4].text.setText("9");   board[7][4].text.setText("7"); board[0][5].text.setText("7");
+			board[2][5].val = 3; 		   board[3][5].val = 5;				board[5][5].val = 2; 		   board[3][6].val = 1;
+			board[2][5].text.setText("3"); board[3][5].text.setText("5");   board[5][5].text.setText("2"); board[3][6].text.setText("1");
+
+			board[8][6].val = 8; 		   board[0][7].val = 8;				board[2][7].val = 4; 		   board[5][7].val = 3;
+			board[8][6].text.setText("8"); board[0][7].text.setText("8");   board[2][7].text.setText("4"); board[5][7].text.setText("3");
+			board[6][7].val = 1; 		   board[0][8].val = 3;				board[1][8].val = 1; 		   board[3][8].val = 8;
+			board[6][7].text.setText("1"); board[0][8].text.setText("3");   board[1][8].text.setText("1"); board[3][8].text.setText("8");
+
+			board[4][8].val = 2; 		   board[5][8].val = 4;				board[6][8].val = 9;
+			board[4][8].text.setText("2"); board[5][8].text.setText("4");   board[6][8].text.setText("9");
+			  
+		}
+
+		else if (boardSelection == 3) {
+			
+			// puzzle 4 in the book
+			board[5][0].val = 4; 		   board[8][0].val = 6;				board[0][1].val = 7; 		   board[1][1].val = 3;
+			board[5][0].text.setText("4"); board[8][0].text.setText("6");   board[0][1].text.setText("7"); board[1][1].text.setText("3");
+			board[2][1].val = 4; 		   board[5][1].val = 2;				board[7][1].val = 5; 		   board[8][1].val = 8;
+			board[2][1].text.setText("4"); board[5][1].text.setText("2");   board[7][1].text.setText("5"); board[8][1].text.setText("8");
+
+			board[3][2].val = 5; 		   board[4][2].val = 7;				board[7][2].val = 2; 		   board[0][3].val = 1;
+			board[3][2].text.setText("5"); board[4][2].text.setText("7");   board[7][2].text.setText("2"); board[0][3].text.setText("1");
+			board[3][3].val = 7; 		   board[6][3].val = 2;				board[7][3].val = 8; 		   board[8][3].val = 3;
+			board[3][3].text.setText("7"); board[6][3].text.setText("2");   board[7][3].text.setText("8"); board[8][3].text.setText("3");
+
+			board[0][4].val = 2; 		   board[2][4].val = 7;				board[6][4].val = 4; 		   board[8][4].val = 9;
+			board[0][4].text.setText("2"); board[2][4].text.setText("7");   board[6][4].text.setText("4"); board[8][4].text.setText("9");
+
+			board[0][5].val = 6; 		   board[1][5].val = 9;				board[2][5].val = 3; 		   board[5][5].val = 8;
+			board[0][5].text.setText("6"); board[1][5].text.setText("9");   board[2][5].text.setText("3"); board[5][5].text.setText("8");
+			board[8][5].val = 7; 		   board[1][6].val = 5;				board[4][6].val = 6; 		   board[5][6].val = 3;
+			board[8][5].text.setText("7"); board[1][6].text.setText("5");   board[4][6].text.setText("6"); board[5][6].text.setText("3");
+
+			board[0][7].val = 9;		   board[1][7].val = 6; 		   board[3][7].val = 1;				board[6][7].val = 8; 		   
+			board[0][7].text.setText("9"); board[1][7].text.setText("6");  board[3][7].text.setText("1");   board[6][7].text.setText("8"); 
+			board[7][7].val = 3;           board[8][7].val = 5; 		   board[0][8].val = 3;				board[3][8].val = 9;
+			board[7][7].text.setText("3"); board[8][7].text.setText("5");  board[0][8].text.setText("3");   board[3][8].text.setText("9");
+			  
+		}
+
+		else if (boardSelection == 4) {
+			
+			// puzzle 5 in the book
+			board[2][0].val = 2; 		   board[3][0].val = 1;				board[0][1].val = 9; 		   board[2][1].val = 7;
+			board[2][0].text.setText("2"); board[3][0].text.setText("1");   board[0][1].text.setText("9"); board[2][1].text.setText("7");
+			board[3][1].val = 8; 		   board[6][1].val = 4;				board[1][2].val = 5; 		   board[2][2].val = 8;
+			board[3][1].text.setText("8"); board[6][1].text.setText("4");   board[1][2].text.setText("5"); board[2][2].text.setText("8");
+
+			board[4][2].val = 9; 		   board[7][2].val = 2;				board[7][2].val = 2; 		   board[0][3].val = 1;
+			board[4][2].text.setText("9"); board[7][2].text.setText("2");   board[7][2].text.setText("2"); board[0][3].text.setText("1");
+			board[1][3].val = 7; 		   board[2][3].val = 5;				board[3][3].val = 9; 		   board[5][3].val = 2;
+			board[1][3].text.setText("7"); board[2][3].text.setText("5");   board[3][3].text.setText("9"); board[5][3].text.setText("2");
+
+			board[7][3].val = 8; 		   board[2][4].val = 4;				board[6][4].val = 5; 		   board[1][5].val = 3;
+			board[7][3].text.setText("8"); board[2][4].text.setText("4");   board[6][4].text.setText("5"); board[1][5].text.setText("3");
+
+			board[3][5].val = 5; 		   board[5][5].val = 8;				board[6][5].val = 2; 		   board[7][5].val = 4;
+			board[3][5].text.setText("5"); board[5][5].text.setText("8");   board[6][5].text.setText("2"); board[7][5].text.setText("4");
+			board[8][5].val = 7; 		   board[1][6].val = 2;				board[4][6].val = 8; 		   board[6][6].val = 9;
+			board[8][5].text.setText("7"); board[1][6].text.setText("2");   board[4][6].text.setText("8"); board[6][6].text.setText("9");
+
+			board[7][6].val = 6;		   board[2][7].val = 1; 		   board[5][7].val = 9;				board[6][7].val = 3; 		   
+			board[7][6].text.setText("6"); board[2][7].text.setText("1");  board[5][7].text.setText("9");   board[6][7].text.setText("3"); 
+			board[8][7].val = 8;           board[5][8].val = 5; 		   board[6][8].val = 7;
+			board[8][7].text.setText("8"); board[5][8].text.setText("5");  board[6][8].text.setText("7");
 			  
 		}
 
