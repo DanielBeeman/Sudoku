@@ -27,8 +27,8 @@ public class Sudoku extends Application {
 
 	private boolean playable = true;
 
-	// the number of numbers in a given row
-	private int numsPerEntity = 4;
+	// if we have already created a board, we should not be able to create any further boards, otherwise they will overlap.
+	private boolean created = false;
 
 	// the entire game board, used in combos. 3 types of combos: horizontal, vertical, boxes.
 	// Each combo is from 0-9. Once all possible combos are complete, the game is complete. 
@@ -59,6 +59,7 @@ public class Sudoku extends Application {
 	private Parent createContent () {
 		root.setPrefSize(1100, 1000);
 
+		// assign tiles to the board
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				Tile tile = new Tile();
@@ -162,7 +163,7 @@ public class Sudoku extends Application {
 
 		Button checkCombos = new Button(" Check ");
 
-		Button createBoard = new Button(" New Board ");
+		Button createBoard = new Button(" Create Board (easy) ");
 
 		button1.setMinWidth(50);
 		button1.setMinHeight(75);
@@ -280,6 +281,9 @@ public class Sudoku extends Application {
 		});
 
 		createBoard.setOnAction(value ->  {
+				if (created) 
+					return;
+				created = true;
            		createNewBoard();
         	});
 
@@ -295,69 +299,70 @@ public class Sudoku extends Application {
 	}
 
 	private void createNewBoard() {
-		
 
-		//another hashtable for locations of a given row
-		Hashtable<Integer, Boolean> locations = new Hashtable<Integer, Boolean>();
+		// idea. have a random int between 0 and 4 be generated, if 1, we assign board values for one board, if 2 we assign values for a second board, etc.
+		Random rand = new Random();
 
-		for (int i = 0; i < 9; i++) {
-			locations.put(0, false);
-			locations.put(1, false);
-			locations.put(2, false);
-			locations.put(3, false);
-			locations.put(4, false);
-			locations.put(5, false);
-			locations.put(6, false);
-			locations.put(7, false);
-			locations.put(8, false);
-				
+		int boardSelection = rand.nextInt(2);
+		System.out.println(boardSelection);
 
-			Random rand = new Random();
+		if (boardSelection == 0) {
+			
 
-			for (int j = numsPerEntity; j > 0; j--){
-				// location (0-8) of a given value in a given row/column.
-				int boardLocation = rand.nextInt(9);
+			board[0][0].val = 1; 		   board[1][0].val = 9;				board[3][0].val = 4; 		   board[5][0].val = 8;
+			board[0][0].text.setText("1"); board[1][0].text.setText("9");   board[3][0].text.setText("4"); board[5][0].text.setText("8");
+			board[7][0].val = 2; 		   board[8][0].val = 5;				board[1][1].val = 6; 		   board[2][1].val = 8;
+			board[7][0].text.setText("2"); board[8][0].text.setText("5");   board[1][1].text.setText("6"); board[2][1].text.setText("8");
 
-				//until we find a new location to place a number, keep generating a new number
-				while (locations.get(boardLocation) == true) {
-					boardLocation = rand.nextInt(9);
-				}
-				locations.put(boardLocation, true);
-				
+			board[5][1].val = 3; 		   board[7][1].val = 4;				board[2][2].val = 2; 		   board[4][2].val = 7;
+			board[5][1].text.setText("3"); board[7][1].text.setText("4");   board[2][2].text.setText("2"); board[4][2].text.setText("7");
+			board[7][2].val = 3; 		   board[3][3].val = 7;				board[4][3].val = 9; 		   board[7][3].val = 6;
+			board[7][2].text.setText("3"); board[3][3].text.setText("7");   board[4][3].text.setText("9"); board[7][3].text.setText("6");
 
-				
-				// number for a given square
-				int nextVal = rand.nextInt(9);
+			board[1][4].val = 1; 		   board[2][4].val = 5;				board[6][4].val = 2; 		   board[7][4].val = 7;
+			board[1][4].text.setText("1"); board[2][4].text.setText("5");   board[6][4].text.setText("2"); board[7][4].text.setText("7");
 
-				
-				
-				boolean foundFalse = false;
+			board[1][5].val = 3; 		   board[4][5].val = 2;				board[5][5].val = 6; 		   board[1][6].val = 4;
+			board[1][5].text.setText("3"); board[4][5].text.setText("2");   board[5][5].text.setText("6"); board[1][6].text.setText("4");
+			board[4][6].val = 8; 		   board[6][6].val = 3;				board[1][7].val = 2; 		   board[3][7].val = 3;
+			board[4][6].text.setText("8"); board[6][6].text.setText("3");   board[1][7].text.setText("2"); board[3][7].text.setText("3");
 
-				while (!foundFalse){
-
-						// make sure we haven't already inserted a number, and that the number entry would keep the board correct
-						nextVal = rand.nextInt(9);
-					board[i][boardLocation].val = nextVal + 1;
-					boolean internal = false;
-					for (Combo c : combos){
-						if (!c.checkEntry()) {
-							foundFalse = false;
-							internal = true;
-						}
-					}			
-					if (!internal) foundFalse = true;
-					System.out.println(internal);
-				}
-				board[i][boardLocation].val = nextVal + 1;
-				board[i][boardLocation].text.setText(Integer.toString(nextVal + 1));
-				
-
-			}
-
-
-
-
+			board[6][7].val = 5; 		   board[7][7].val = 1;				board[0][8].val = 3; 		   board[1][8].val = 7;
+			board[6][7].text.setText("5"); board[7][7].text.setText("1");   board[0][8].text.setText("3"); board[1][8].text.setText("7");
+			board[3][8].val = 5; 		   board[5][8].val = 2;				board[7][8].val = 8; 		   board[8][8].val = 6;
+			board[3][8].text.setText("5"); board[5][8].text.setText("2");   board[7][8].text.setText("8"); board[8][8].text.setText("6");
+			  
 		}
+		
+		
+		else if (boardSelection == 1) {
+			
+
+			board[4][0].val = 8; 		   board[7][0].val = 4;				board[1][1].val = 6; 		   board[5][1].val = 4;
+			board[4][0].text.setText("8"); board[7][0].text.setText("4");   board[1][1].text.setText("6"); board[5][1].text.setText("4");
+			board[6][1].val = 9; 		   board[8][1].val = 7;				board[0][2].val = 4; 		   board[1][2].val = 9;
+			board[6][1].text.setText("9"); board[8][1].text.setText("7");   board[0][2].text.setText("4"); board[1][2].text.setText("9");
+
+			board[3][2].val = 2; 		   board[6][2].val = 3;				board[8][2].val = 8; 		   board[0][3].val = 1;
+			board[3][2].text.setText("2"); board[6][2].text.setText("3");   board[8][2].text.setText("8"); board[0][3].text.setText("1");
+			board[1][3].val = 2; 		   board[3][3].val = 6;				board[4][3].val = 9; 		   board[5][3].val = 5;
+			board[1][3].text.setText("2"); board[3][3].text.setText("6");   board[4][3].text.setText("9"); board[5][3].text.setText("5");
+
+			board[2][4].val = 9; 		   board[4][4].val = 2;				board[6][4].val = 5; 		   board[3][5].val = 7;
+			board[2][4].text.setText("9"); board[4][4].text.setText("2");   board[6][4].text.setText("5"); board[3][5].text.setText("7");
+
+			board[4][5].val = 3; 		   board[5][5].val = 8;				board[7][5].val = 1; 		   board[8][5].val = 9;
+			board[4][5].text.setText("3"); board[5][5].text.setText("8");   board[7][5].text.setText("1"); board[8][5].text.setText("9");
+			board[0][6].val = 3; 		   board[2][6].val = 2;				board[5][6].val = 7; 		   board[7][6].val = 9;
+			board[0][6].text.setText("3"); board[2][6].text.setText("2");   board[5][6].text.setText("7"); board[7][6].text.setText("9");
+
+			board[8][6].val = 6;		   board[0][7].val = 9; 		   board[2][7].val = 5;				board[3][7].val = 1; 		   
+			board[8][6].text.setText("6"); board[0][7].text.setText("9");  board[2][7].text.setText("5");   board[3][7].text.setText("1"); 
+			board[7][7].val = 8;           board[1][8].val = 1; 		   board[4][8].val = 4;
+			board[7][7].text.setText("8"); board[1][8].text.setText("1");  board[4][8].text.setText("4");
+			  
+		}
+
 		return;
 	}
 
@@ -380,9 +385,6 @@ public class Sudoku extends Application {
 				lineSize++;
 			}
 		}
-		System.out.println("number of comboline and rectangles: ");
-		System.out.println(lineSize);
-		System.out.println();
 		//check if the game is over (9 rows, 9 columns, 9 boxes)
 		if (lineSize == 27) {
 
@@ -395,21 +397,36 @@ public class Sudoku extends Application {
 			}
 			
 			board[1][3].text.setText("P");
+			board[1][3].text.setStroke(Color.GREEN);
 			board[2][3].text.setText("U");
+			board[2][3].text.setStroke(Color.GREEN);
 			board[3][3].text.setText("Z");
+			board[3][3].text.setStroke(Color.GREEN);
 			board[4][3].text.setText("Z");
+			board[4][3].text.setStroke(Color.GREEN);
 			board[5][3].text.setText("L");
+			board[5][3].text.setStroke(Color.GREEN);
 			board[6][3].text.setText("E");
+			board[6][3].text.setStroke(Color.GREEN);
 
 			board[0][4].text.setText("C");
+			board[0][4].text.setStroke(Color.GREEN);
 			board[1][4].text.setText("O");
+			board[1][4].text.setStroke(Color.GREEN);
 			board[2][4].text.setText("M");
+			board[2][4].text.setStroke(Color.GREEN);
 			board[3][4].text.setText("P");
+			board[3][4].text.setStroke(Color.GREEN);
 			board[4][4].text.setText("L");
+			board[4][4].text.setStroke(Color.GREEN);
 			board[5][4].text.setText("E");
+			board[5][4].text.setStroke(Color.GREEN);
 			board[6][4].text.setText("T");
+			board[6][4].text.setStroke(Color.GREEN);
 			board[7][4].text.setText("E");
+			board[7][4].text.setStroke(Color.GREEN);
 			board[8][4].text.setText("!");
+			board[8][4].text.setStroke(Color.GREEN);
 
 			playable = false;
 		}
